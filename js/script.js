@@ -101,5 +101,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // taymer
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // kalkulyator
 
+document.addEventListener('DOMContentLoaded', function () {
+    const screen = document.querySelector('.calc__screen-out');
+    const buttons = document.querySelectorAll('.calc__btn');
+
+    let currentInput = '';
+    let result = '';
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const buttonText = button.innerText;
+
+            if (buttonText === 'ac') {
+                currentInput = '';
+                result = '';
+            } else if (buttonText === 'ce') {
+                currentInput = currentInput.slice(0, -1);
+            } else if (buttonText === '=') {
+                try {
+                    result = eval(currentInput);
+                } catch (error) {
+                    result = 'Error';
+                }
+            } else {
+                currentInput += buttonText;
+            }
+
+            screen.innerText = result !== '' ? result : currentInput;
+        });
+    });
+});
