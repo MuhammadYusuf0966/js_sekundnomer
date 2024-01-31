@@ -103,7 +103,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const timerBtns = document.querySelectorAll('.timer__btn');
+    const playBtn = document.querySelector('.timer__set');
+    const clearBtn = document.querySelector('.timer__clear');
+    const hoursDisplay = document.querySelector('.timer__hours');
+    const minutesDisplay = document.querySelector('.timer__minutes');
+    const secondsDisplay = document.querySelector('.timer__seconds');
+    let timer;
 
+    timerBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const btnValue = btn.textContent;
+            if (hoursDisplay.textContent.length < 2) {
+                hoursDisplay.textContent += btnValue;
+            } else if (minutesDisplay.textContent.length < 2) {
+                minutesDisplay.textContent += btnValue;
+            } else if (secondsDisplay.textContent.length < 2) {
+                secondsDisplay.textContent += btnValue;
+            }
+        });
+    });
+
+    playBtn.addEventListener('click', function () {
+        const totalSeconds = parseInt(hoursDisplay.textContent) * 3600 + parseInt(minutesDisplay.textContent) * 60 + parseInt(secondsDisplay.textContent);
+        if (totalSeconds > 0) {
+            startTimer(totalSeconds);
+        }
+    });
+
+    clearBtn.addEventListener('click', function () {
+        resetTimer();
+    });
+
+    function startTimer(totalSeconds) {
+        let secondsLeft = totalSeconds;
+
+        timer = setInterval(function () {
+            if (secondsLeft <= 0) {
+                clearInterval(timer);
+                // You can add any additional actions when the timer reaches 0
+            } else {
+                updateTimerDisplay(secondsLeft);
+                secondsLeft--;
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay(secondsLeft) {
+        const hours = Math.floor(secondsLeft / 3600);
+        const minutes = Math.floor((secondsLeft % 3600) / 60);
+        const seconds = secondsLeft % 60;
+
+        hoursDisplay.textContent = hours < 10 ? '0' + hours : hours;
+        minutesDisplay.textContent = minutes < 10 ? '0' + minutes : minutes;
+        secondsDisplay.textContent = seconds < 10 ? '0' + seconds : seconds;
+    }
+
+    function resetTimer() {
+        clearInterval(timer);
+        hoursDisplay.textContent = '00';
+        minutesDisplay.textContent = '00';
+        secondsDisplay.textContent = '00';
+    }
+});
 
 
 
